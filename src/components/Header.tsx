@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Calendar, User, LogIn } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -32,10 +33,18 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant="outline" size="sm" className="border-medical-primary text-medical-primary hover:bg-medical-light">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="border-medical-primary text-medical-primary hover:bg-medical-light"
+            onClick={() => navigate('/login')}
+          >
             <LogIn className="h-4 w-4 mr-1" /> تسجيل الدخول
           </Button>
-          <Button className="bg-medical-primary hover:bg-medical-dark">
+          <Button 
+            className="bg-medical-primary hover:bg-medical-dark"
+            onClick={() => navigate('/register')}
+          >
             <User className="h-4 w-4 mr-1" /> إنشاء حساب
           </Button>
         </div>
@@ -82,10 +91,23 @@ const Header = () => {
               من نحن
             </Link>
             <div className="flex flex-col space-y-2 pt-2 border-t">
-              <Button variant="outline" className="w-full justify-center border-medical-primary text-medical-primary hover:bg-medical-light">
+              <Button 
+                variant="outline" 
+                className="w-full justify-center border-medical-primary text-medical-primary hover:bg-medical-light"
+                onClick={() => {
+                  navigate('/login');
+                  setIsMenuOpen(false);
+                }}
+              >
                 <LogIn className="h-4 w-4 ml-2" /> تسجيل الدخول
               </Button>
-              <Button className="w-full justify-center bg-medical-primary hover:bg-medical-dark">
+              <Button 
+                className="w-full justify-center bg-medical-primary hover:bg-medical-dark"
+                onClick={() => {
+                  navigate('/register');
+                  setIsMenuOpen(false);
+                }}
+              >
                 <User className="h-4 w-4 ml-2" /> إنشاء حساب
               </Button>
             </div>
