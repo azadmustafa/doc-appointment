@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Mail, Lock, LogIn } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SocialAuthButtons from "@/components/SocialAuthButtons";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "يرجى إدخال بريد إلكتروني صحيح" }),
@@ -160,6 +161,8 @@ const Login = () => {
                     </>
                   )}
                 </Button>
+
+                <SocialAuthButtons />
 
                 <div className="text-center mt-4">
                   <p className="text-sm text-gray-600">

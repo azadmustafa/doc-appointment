@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { User, Mail, Lock, Phone, UserPlus } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SocialAuthButtons from "@/components/SocialAuthButtons";
 
 const registerFormSchema = z
   .object({
@@ -85,8 +86,10 @@ const Register = () => {
               <p className="text-gray-600 mt-2">أدخل بياناتك لإنشاء حساب في منصة طبيبي</p>
             </div>
 
+            <SocialAuthButtons />
+
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-6">
                 <FormField
                   control={form.control}
                   name="fullName"
