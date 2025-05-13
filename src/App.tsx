@@ -29,6 +29,12 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/hospitals" element={<DoctorsList />} /> {/* يمكن تغييره لاحقاً */}
+          <Route path="/hospitals/:id" element={<DoctorDetail />} /> {/* يمكن تغييره لاحقاً */}
+          <Route path="/beauty-centers" element={<DoctorsList />} /> {/* يمكن تغييره لاحقاً */}
+          <Route path="/beauty-centers/:id" element={<DoctorDetail />} /> {/* يمكن تغييره لاحقاً */}
+          <Route path="/promotions" element={<DoctorsList />} /> {/* يمكن تغييره لاحقاً */}
+          <Route path="/specialties" element={<DoctorsList />} /> {/* يمكن تغييره لاحقاً */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -7,6 +7,13 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import SpecialtyCard from "@/components/SpecialtyCard";
 import DoctorCard from "@/components/DoctorCard";
+import OnlineDoctors from "@/components/OnlineDoctors";
+import TopHospitals from "@/components/TopHospitals";
+import PromotionsSection from "@/components/PromotionsSection";
+import BeautyCenters from "@/components/BeautyCenters";
+import AppDownload from "@/components/AppDownload";
+import FAQSection from "@/components/FAQSection";
+import FreeConsultation from "@/components/FreeConsultation";
 
 const specialties = [
   { icon: Heart, title: "قلب وأوعية دموية", count: 28, color: "#e74c3c" },
@@ -19,7 +26,7 @@ const specialties = [
   { icon: Pill, title: "أمراض جلدية", count: 18, color: "#8e44ad" },
 ];
 
-// Mock doctor data
+// بيانات الأطباء المميزين
 const featuredDoctors = [
   {
     id: 1,
@@ -28,37 +35,37 @@ const featuredDoctors = [
     image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.9,
     reviewCount: 124,
-    location: "الرياض، العليا",
+    location: "بغداد، الكرخ",
     price: 350
   },
   {
     id: 2,
-    name: "د. سارة العتيبي",
+    name: "د. سارة العبيدي",
     specialty: "طب الأطفال",
     image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.8,
     reviewCount: 98,
-    location: "جدة، الروضة",
+    location: "بغداد، الرصافة",
     price: 300
   },
   {
     id: 3,
-    name: "د. محمد القحطاني",
+    name: "د. محمد الكاظمي",
     specialty: "جراحة العظام",
     image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.7,
     reviewCount: 87,
-    location: "الرياض، النزهة",
+    location: "بغداد، المنصور",
     price: 400
   },
   {
     id: 4,
-    name: "د. فاطمة الدوسري",
+    name: "د. فاطمة الموسوي",
     specialty: "طب الأسنان",
     image: "https://images.unsplash.com/photo-1571772996211-2f02974a304d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.9,
     reviewCount: 112,
-    location: "الدمام، الشاطئ",
+    location: "البصرة، العشار",
     price: 280
   }
 ];
@@ -139,6 +146,37 @@ const Index = () => {
           </div>
         </section>
         
+        {/* Online Consultations Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <OnlineDoctors />
+          </div>
+        </section>
+        
+        {/* Top Hospitals Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <TopHospitals />
+          </div>
+        </section>
+        
+        {/* Promotions Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <PromotionsSection />
+          </div>
+        </section>
+        
+        {/* Beauty Centers Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <BeautyCenters />
+          </div>
+        </section>
+        
+        {/* App Download Section */}
+        <AppDownload />
+        
         {/* How It Works */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -183,12 +221,18 @@ const Index = () => {
           </div>
         </section>
         
+        {/* FAQ Section */}
+        <FAQSection />
+        
+        {/* Free Consultation Section */}
+        <FreeConsultation />
+        
         {/* CTA Section */}
         <section className="py-16 bg-medical-primary text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">احجز موعدك الطبي الآن</h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              لا تؤجل صحتك، احجز موعدًا مع أفضل الأطباء في السعودية
+              لا تؤجل صحتك، احجز موعدًا مع أفضل الأطباء في العراق
             </p>
             <Link to="/doctors">
               <Button className="bg-white text-medical-primary hover:bg-gray-100 px-8 py-3 text-lg">
