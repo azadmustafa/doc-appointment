@@ -3,10 +3,13 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Calendar, User, LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -19,43 +22,50 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           <Link to="/" className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200">
-            الرئيسية
+            {t('common.home')}
           </Link>
           <Link to="/doctors" className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200">
-            الأطباء
+            {t('common.doctors')}
           </Link>
           <Link to="/appointments" className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200">
-            مواعيدي
+            {t('common.appointments')}
+          </Link>
+          <Link to="/consultation" className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200">
+            {t('common.consultation')}
           </Link>
           <Link to="/about" className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200">
-            من نحن
+            {t('common.about')}
           </Link>
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
+          <LanguageSwitcher />
           <Button 
             variant="outline" 
             size="sm" 
             className="border-medical-primary text-medical-primary hover:bg-medical-light"
             onClick={() => navigate('/login')}
           >
-            <LogIn className="h-4 w-4 mr-1" /> تسجيل الدخول
+            <LogIn className="h-4 w-4 mr-1" /> {t('common.login')}
           </Button>
           <Button 
             className="bg-medical-primary hover:bg-medical-dark"
             onClick={() => navigate('/register')}
           >
-            <User className="h-4 w-4 mr-1" /> إنشاء حساب
+            <User className="h-4 w-4 mr-1" /> {t('common.register')}
           </Button>
         </div>
 
         {/* Mobile Navigation */}
-        <button 
-          className="md:hidden text-gray-700 focus:outline-none"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center space-x-2">
+          <LanguageSwitcher />
+          <button 
+            className="text-gray-700 focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -67,28 +77,35 @@ const Header = () => {
               className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200 py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              الرئيسية
+              {t('common.home')}
             </Link>
             <Link 
               to="/doctors" 
               className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200 py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              الأطباء
+              {t('common.doctors')}
             </Link>
             <Link 
               to="/appointments" 
               className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200 py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              مواعيدي
+              {t('common.appointments')}
+            </Link>
+            <Link 
+              to="/consultation" 
+              className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200 py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t('common.consultation')}
             </Link>
             <Link 
               to="/about" 
               className="font-medium text-gray-700 hover:text-medical-primary transition-colors duration-200 py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              من نحن
+              {t('common.about')}
             </Link>
             <div className="flex flex-col space-y-2 pt-2 border-t">
               <Button 
@@ -99,7 +116,7 @@ const Header = () => {
                   setIsMenuOpen(false);
                 }}
               >
-                <LogIn className="h-4 w-4 ml-2" /> تسجيل الدخول
+                <LogIn className="h-4 w-4 ml-2" /> {t('common.login')}
               </Button>
               <Button 
                 className="w-full justify-center bg-medical-primary hover:bg-medical-dark"
@@ -108,7 +125,7 @@ const Header = () => {
                   setIsMenuOpen(false);
                 }}
               >
-                <User className="h-4 w-4 ml-2" /> إنشاء حساب
+                <User className="h-4 w-4 ml-2" /> {t('common.register')}
               </Button>
             </div>
           </div>
