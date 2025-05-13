@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { 
   Filter, 
@@ -21,6 +21,7 @@ import DoctorCard from "@/components/DoctorCard";
 import SearchBar from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Accordion,
   AccordionContent,
@@ -36,8 +37,8 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 
-// Mock doctors data
-const doctorsData = [
+// بيانات الأطباء في العراق
+const allDoctorsData = [
   {
     id: 1,
     name: "د. أحمد الشمري",
@@ -45,82 +46,102 @@ const doctorsData = [
     image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.9,
     reviewCount: 124,
-    location: "الرياض، العليا",
-    price: 350
+    location: "بغداد، الكرخ",
+    price: 35000
   },
   {
     id: 2,
-    name: "د. سارة العتيبي",
+    name: "د. سارة العبيدي",
     specialty: "طب الأطفال",
     image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.8,
     reviewCount: 98,
-    location: "جدة، الروضة",
-    price: 300
+    location: "بغداد، الرصافة",
+    price: 30000
   },
   {
     id: 3,
-    name: "د. محمد القحطاني",
+    name: "د. محمد الكاظمي",
     specialty: "جراحة العظام",
     image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.7,
     reviewCount: 87,
-    location: "الرياض، النزهة",
-    price: 400
+    location: "بغداد، المنصور",
+    price: 40000
   },
   {
     id: 4,
-    name: "د. فاطمة الدوسري",
+    name: "د. فاطمة الموسوي",
     specialty: "طب الأسنان",
     image: "https://images.unsplash.com/photo-1571772996211-2f02974a304d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.9,
     reviewCount: 112,
-    location: "الدمام، الشاطئ",
-    price: 280
+    location: "البصرة، العشار",
+    price: 28000
   },
   {
     id: 5,
-    name: "د. عبدالله المالكي",
+    name: "د. عبدالله الجبوري",
     specialty: "المخ والأعصاب",
     image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.6,
     reviewCount: 76,
-    location: "الرياض، الملز",
-    price: 450
+    location: "الموصل، الدواسة",
+    price: 45000
   },
   {
     id: 6,
-    name: "د. نورة الغامدي",
+    name: "د. نورة الزيدي",
     specialty: "طب الباطنة",
     image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.8,
     reviewCount: 92,
-    location: "جدة، المروة",
-    price: 320
+    location: "النجف، حي السلام",
+    price: 32000
   },
   {
     id: 7,
-    name: "د. خالد الهاجري",
+    name: "د. خالد العامري",
     specialty: "طب العيون",
     image: "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.9,
     reviewCount: 103,
-    location: "الرياض، العليا",
-    price: 380
+    location: "كربلاء، حي المعلمين",
+    price: 38000
   },
   {
     id: 8,
-    name: "د. ريم الزهراني",
+    name: "د. ريم الحسيني",
     specialty: "أمراض جلدية",
     image: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     rating: 4.7,
     reviewCount: 85,
-    location: "جدة، النسيم",
-    price: 300
+    location: "ديالى، بعقوبة",
+    price: 30000
+  },
+  {
+    id: 9,
+    name: "د. حسين العلوي",
+    specialty: "قلب وأوعية دموية",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+    rating: 4.5,
+    reviewCount: 79,
+    location: "الأنبار، الرمادي",
+    price: 33000
+  },
+  {
+    id: 10,
+    name: "د. زينب الربيعي",
+    specialty: "طب الأطفال",
+    image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+    rating: 4.6,
+    reviewCount: 82,
+    location: "بغداد، الكاظمية",
+    price: 28000
   }
 ];
 
-// Specialties
+// التخصصات
 const specialties = [
   { name: "قلب وأوعية دموية", icon: Heart, color: "#e74c3c" },
   { name: "المخ والأعصاب", icon: Brain, color: "#9b59b6" },
@@ -134,44 +155,141 @@ const specialties = [
   { name: "طب الأسنان", icon: Scissors, color: "#e67e22" },
 ];
 
-// Cities
-const cities = ["الرياض", "جدة", "الدمام", "مكة المكرمة", "المدينة المنورة", "الطائف", "الخبر", "تبوك"];
+// المدن العراقية
+const cities = ["بغداد", "البصرة", "الموصل", "أربيل", "النجف", "كربلاء", "السليمانية", "الأنبار", "ديالى", "ذي قار", "كركوك"];
 
 const DoctorsList = () => {
-  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState({
     specialty: searchParams.get("specialty") || "",
-    location: searchParams.get("location") || "",
+    location: searchParams.get("governorate") || "",
     rating: 0,
-    price: [0, 500],
+    price: [0, 50000],
     availability: false,
   });
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("recommended");
+  const [filteredDoctors, setFilteredDoctors] = useState(allDoctorsData);
 
-  const handleFilterChange = (key: string, value: any) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  // تحميل الفلاتر من URL عند تحميل الصفحة
+  useEffect(() => {
+    const specialty = searchParams.get("specialty") || "";
+    const governorate = searchParams.get("governorate") || "";
+    const region = searchParams.get("region") || "";
+    const search = searchParams.get("search") || "";
+
+    const newFilters = { ...filters };
+    const newActiveFilters: string[] = [];
+
+    if (specialty) {
+      newFilters.specialty = specialty;
+      newActiveFilters.push(specialty);
+    }
+
+    if (governorate) {
+      newFilters.location = governorate;
+      newActiveFilters.push(governorate);
+    }
+
+    setFilters(newFilters);
+    setActiveFilters(newActiveFilters);
+
+    // تطبيق الفلتر الأولي
+    applyFilters(newFilters);
+  }, [searchParams]);
+
+  // تطبيق الفلاتر على بيانات الأطباء
+  const applyFilters = (currentFilters: typeof filters) => {
+    let results = [...allDoctorsData];
     
-    if (key === "specialty" && value) {
-      if (!activeFilters.includes(value)) {
-        setActiveFilters(prev => [...prev, value]);
-      }
-    } else if (key === "location" && value) {
+    // تصفية حسب التخصص
+    if (currentFilters.specialty) {
+      results = results.filter(doctor => doctor.specialty === currentFilters.specialty);
+    }
+    
+    // تصفية حسب الموقع
+    if (currentFilters.location) {
+      results = results.filter(doctor => doctor.location.includes(currentFilters.location));
+    }
+    
+    // تصفية حسب التقييم
+    if (currentFilters.rating > 0) {
+      results = results.filter(doctor => doctor.rating >= currentFilters.rating);
+    }
+    
+    // تصفية حسب نطاق السعر
+    results = results.filter(
+      doctor => doctor.price >= currentFilters.price[0] && doctor.price <= currentFilters.price[1]
+    );
+    
+    // تطبيق الترتيب
+    switch(sortOption) {
+      case "rating":
+        results.sort((a, b) => b.rating - a.rating);
+        break;
+      case "price_low":
+        results.sort((a, b) => a.price - b.price);
+        break;
+      case "price_high":
+        results.sort((a, b) => b.price - a.price);
+        break;
+      case "availability":
+        // نفترض أن الأطباء المتاحين هم ذوي المعرفات الفردية كمثال
+        results.sort((a, b) => a.id % 2 - b.id % 2);
+        break;
+      default: // recommended
+        // الإبقاء على الترتيب الافتراضي
+        break;
+    }
+    
+    setFilteredDoctors(results);
+  };
+
+  // معالج تغيير الفلاتر
+  const handleFilterChange = (key: string, value: any) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    // إضافة إلى الفلاتر النشطة (إذا لم تكن فارغة)
+    if ((key === "specialty" || key === "location") && value) {
       if (!activeFilters.includes(value)) {
         setActiveFilters(prev => [...prev, value]);
       }
     }
+    
+    // تطبيق الفلاتر المحدثة
+    applyFilters(newFilters);
+    
+    // عرض إشعار لتأكيد تطبيق الفلتر
+    toast({
+      title: "تم تطبيق الفلتر",
+      description: `تم تحديث النتائج وفقًا للفلاتر المحددة.`,
+    });
   };
-
+  
+  // إزالة فلتر معين
   const removeFilter = (filter: string) => {
     setActiveFilters(prev => prev.filter(f => f !== filter));
     
+    const newFilters = { ...filters };
+    
     if (filters.specialty === filter) {
-      setFilters(prev => ({ ...prev, specialty: "" }));
-    } else if (filters.location === filter) {
-      setFilters(prev => ({ ...prev, location: "" }));
+      newFilters.specialty = "";
     }
+    
+    if (filters.location === filter) {
+      newFilters.location = "";
+    }
+    
+    setFilters(newFilters);
+    applyFilters(newFilters);
   };
+  
+  // تطبيق الفلتر عند تغيير خيار الترتيب
+  useEffect(() => {
+    applyFilters(filters);
+  }, [sortOption]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -189,6 +307,7 @@ const DoctorsList = () => {
         {/* Filters and Results */}
         <section className="py-8">
           <div className="container mx-auto px-4">
+            {/* عرض الفلاتر النشطة */}
             <div className="flex flex-wrap gap-3 mb-4">
               {activeFilters.map(filter => (
                 <Badge 
@@ -210,7 +329,9 @@ const DoctorsList = () => {
                 <button 
                   onClick={() => {
                     setActiveFilters([]);
-                    setFilters(prev => ({ ...prev, specialty: "", location: "" }));
+                    const newFilters = { ...filters, specialty: "", location: "" };
+                    setFilters(newFilters);
+                    applyFilters(newFilters);
                   }}
                   className="text-sm text-gray-500 hover:text-medical-primary"
                 >
@@ -328,16 +449,16 @@ const DoctorsList = () => {
                           <AccordionContent>
                             <div className="px-2">
                               <Slider
-                                defaultValue={[0, 500]}
-                                max={1000}
-                                step={50}
+                                defaultValue={[0, 50000]}
+                                max={50000}
+                                step={5000}
                                 value={filters.price}
                                 onValueChange={(value) => handleFilterChange("price", value)}
                                 className="my-6"
                               />
                               <div className="flex justify-between text-sm">
-                                <span>{filters.price[0]} ريال</span>
-                                <span>{filters.price[1]} ريال</span>
+                                <span>{filters.price[0]} دينار</span>
+                                <span>{filters.price[1]} دينار</span>
                               </div>
                             </div>
                           </AccordionContent>
@@ -449,16 +570,16 @@ const DoctorsList = () => {
                       <AccordionContent>
                         <div className="px-2">
                           <Slider
-                            defaultValue={[0, 500]}
-                            max={1000}
-                            step={50}
+                            defaultValue={[0, 50000]}
+                            max={50000}
+                            step={5000}
                             value={filters.price}
                             onValueChange={(value) => handleFilterChange("price", value)}
                             className="my-6"
                           />
                           <div className="flex justify-between text-sm">
-                            <span>{filters.price[0]} ريال</span>
-                            <span>{filters.price[1]} ريال</span>
+                            <span>{filters.price[0]} دينار</span>
+                            <span>{filters.price[1]} دينار</span>
                           </div>
                         </div>
                       </AccordionContent>
@@ -489,18 +610,29 @@ const DoctorsList = () => {
                       className="w-full"
                       onClick={() => {
                         setActiveFilters([]);
-                        setFilters({
+                        const resetFilters = {
                           specialty: "",
                           location: "",
                           rating: 0,
-                          price: [0, 500],
+                          price: [0, 50000],
                           availability: false,
-                        });
+                        };
+                        setFilters(resetFilters);
+                        applyFilters(resetFilters);
                       }}
                     >
                       إعادة ضبط
                     </Button>
-                    <Button className="w-full bg-medical-primary hover:bg-medical-dark">
+                    <Button 
+                      className="w-full bg-medical-primary hover:bg-medical-dark"
+                      onClick={() => {
+                        applyFilters(filters);
+                        toast({
+                          title: "تم تطبيق الفلاتر",
+                          description: "تم تحديث النتائج بناءً على اختياراتك.",
+                        });
+                      }}
+                    >
                       تطبيق
                     </Button>
                   </div>
@@ -509,42 +641,53 @@ const DoctorsList = () => {
               
               {/* Doctors Grid */}
               <div className="lg:col-span-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {doctorsData.map((doctor) => (
-                    <DoctorCard 
-                      key={doctor.id}
-                      id={doctor.id}
-                      name={doctor.name}
-                      specialty={doctor.specialty}
-                      image={doctor.image}
-                      rating={doctor.rating}
-                      reviewCount={doctor.reviewCount}
-                      location={doctor.location}
-                      price={doctor.price}
-                    />
-                  ))}
-                </div>
+                {filteredDoctors.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredDoctors.map((doctor) => (
+                      <DoctorCard 
+                        key={doctor.id}
+                        id={doctor.id}
+                        name={doctor.name}
+                        specialty={doctor.specialty}
+                        image={doctor.image}
+                        rating={doctor.rating}
+                        reviewCount={doctor.reviewCount}
+                        location={doctor.location}
+                        price={doctor.price}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <h3 className="text-xl font-semibold mb-2">لا يوجد أطباء مطابقين</h3>
+                    <p className="text-gray-600">
+                      لا يوجد أطباء مطابقين للفلاتر المحددة. يرجى تعديل معايير البحث الخاصة بك وحاول مرة أخرى.
+                    </p>
+                  </div>
+                )}
                 
                 {/* Pagination */}
-                <div className="mt-8 flex justify-center">
-                  <nav className="flex items-center space-x-1">
-                    <Button variant="outline" size="sm" disabled>
-                      السابق
-                    </Button>
-                    <Button variant="outline" size="sm" className="bg-medical-primary text-white hover:bg-medical-dark">
-                      1
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      2
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      3
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      التالي
-                    </Button>
-                  </nav>
-                </div>
+                {filteredDoctors.length > 0 && (
+                  <div className="mt-8 flex justify-center">
+                    <nav className="flex items-center space-x-1">
+                      <Button variant="outline" size="sm" disabled>
+                        السابق
+                      </Button>
+                      <Button variant="outline" size="sm" className="bg-medical-primary text-white hover:bg-medical-dark">
+                        1
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        2
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        3
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        التالي
+                      </Button>
+                    </nav>
+                  </div>
+                )}
               </div>
             </div>
           </div>

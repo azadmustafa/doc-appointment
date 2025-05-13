@@ -12,6 +12,7 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Consultation from "./pages/Consultation";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/consultation" element={<Consultation />} />
           <Route path="/hospitals" element={<DoctorsList />} /> {/* يمكن تغييره لاحقاً */}
           <Route path="/hospitals/:id" element={<DoctorDetail />} /> {/* يمكن تغييره لاحقاً */}
           <Route path="/beauty-centers" element={<DoctorsList />} /> {/* يمكن تغييره لاحقاً */}

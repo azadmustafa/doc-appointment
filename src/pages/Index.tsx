@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { Heart, Brain, Stethoscope, Eye, Bone, Activity, Scissors, Pill } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,6 @@ import PromotionsSection from "@/components/PromotionsSection";
 import BeautyCenters from "@/components/BeautyCenters";
 import AppDownload from "@/components/AppDownload";
 import FAQSection from "@/components/FAQSection";
-import FreeConsultation from "@/components/FreeConsultation";
 
 const specialties = [
   { icon: Heart, title: "قلب وأوعية دموية", count: 28, color: "#e74c3c" },
@@ -36,7 +36,7 @@ const featuredDoctors = [
     rating: 4.9,
     reviewCount: 124,
     location: "بغداد، الكرخ",
-    price: 350
+    price: 35000
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ const featuredDoctors = [
     rating: 4.8,
     reviewCount: 98,
     location: "بغداد، الرصافة",
-    price: 300
+    price: 30000
   },
   {
     id: 3,
@@ -56,7 +56,7 @@ const featuredDoctors = [
     rating: 4.7,
     reviewCount: 87,
     location: "بغداد، المنصور",
-    price: 400
+    price: 40000
   },
   {
     id: 4,
@@ -66,7 +66,7 @@ const featuredDoctors = [
     rating: 4.9,
     reviewCount: 112,
     location: "البصرة، العشار",
-    price: 280
+    price: 28000
   }
 ];
 
@@ -224,9 +224,6 @@ const Index = () => {
         {/* FAQ Section */}
         <FAQSection />
         
-        {/* Free Consultation Section */}
-        <FreeConsultation />
-        
         {/* CTA Section */}
         <section className="py-16 bg-medical-primary text-white">
           <div className="container mx-auto px-4 text-center">
@@ -234,11 +231,18 @@ const Index = () => {
             <p className="text-xl mb-8 max-w-2xl mx-auto">
               لا تؤجل صحتك، احجز موعدًا مع أفضل الأطباء في العراق
             </p>
-            <Link to="/doctors">
-              <Button className="bg-white text-medical-primary hover:bg-gray-100 px-8 py-3 text-lg">
-                ابحث عن طبيب
-              </Button>
-            </Link>
+            <div className="flex flex-col md:flex-row gap-4 justify-center">
+              <Link to="/doctors">
+                <Button className="bg-white text-medical-primary hover:bg-gray-100 px-8 py-3 text-lg">
+                  ابحث عن طبيب
+                </Button>
+              </Link>
+              <Link to="/consultation">
+                <Button className="bg-medical-dark hover:bg-medical-dark/90 px-8 py-3 text-lg">
+                  طرح استشارة مجانية
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
