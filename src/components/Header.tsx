@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/AuthContext";
@@ -19,6 +19,7 @@ import {
   LogIn,
   Edit,
   DollarSign,
+  CreditCard,
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -94,6 +95,9 @@ const Header = () => {
           </Link>
           <Link to="/about" className="hover:text-medical-primary">
             {t("aboutUs")}
+          </Link>
+          <Link to="/payment" className="hover:text-medical-primary">
+            {t("payment")}
           </Link>
         </nav>
 

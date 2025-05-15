@@ -31,6 +31,7 @@ import PromotionDetail from "./pages/PromotionDetail";
 import HospitalsList from "./pages/HospitalsList";
 import HospitalDetail from "./pages/HospitalDetail";
 import BeautyCenterDetail from "./pages/BeautyCenterDetail";
+import Payment from "./pages/Payment";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/terms-pricing" element={<TermsAndPricing />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/service-quote" element={<ServiceQuote />} />
+            <Route path="/user-quotes" element={<UserQuotes />} />
             <Route path="/geo-search" element={<GeoSearch />} />
             <Route path="/beauty-centers" element={<BeautyCenters />} />
             <Route path="/beauty-centers/:id" element={<BeautyCenterDetail />} />
@@ -65,6 +67,7 @@ const App = () => (
             <Route path="/hospitals/:id" element={<HospitalDetail />} />
             <Route path="/promotions" element={<Promotions />} />
             <Route path="/promotions/:id" element={<PromotionDetail />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
