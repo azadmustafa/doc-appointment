@@ -15,6 +15,8 @@ import FAQSection from "@/components/FAQSection";
 import PharmacyOrderSection from "@/components/PharmacyOrderSection";
 import MedicalCentersSection from "@/components/MedicalCentersSection";
 import PatientActionsSection from "@/components/PatientActionsSection";
+import OnlineDoctors from "@/components/OnlineDoctors";
+import BeautyCentersSection from "@/components/BeautyCentersSection";
 
 const Index = () => {
   return (
@@ -28,11 +30,17 @@ const Index = () => {
         {/* Specialties Section */}
         <SpecialtiesSection />
         
+        {/* Online Consultations Section */}
+        <OnlineDoctors />
+        
         {/* Hospitals Section */}
         <HospitalsSection />
         
         {/* Featured Doctors */}
         <FeaturedDoctorsSection />
+        
+        {/* Beauty Centers Section */}
+        <BeautyCentersSection />
         
         {/* Offers Section */}
         <OffersSection />

@@ -19,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				cairo: ['Cairo', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -63,14 +66,14 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Medical theme colors
+				// Updated Medical theme colors
 				medical: {
-					primary: '#1E88E5',    // Main blue
+					primary: '#4A9DFF',    // Lighter blue
 					secondary: '#4CAF50',  // Green accent
-					light: '#E3F2FD',      // Light blue background
-					dark: '#1565C0',       // Dark blue for emphasis
+					light: '#E6F2FF',      // Very light blue background
+					dark: '#2B7DE9',       // Slightly darker blue for emphasis
 					accent: '#FF5722',     // Orange accent for CTAs
-					gray: '#78909C'        // Neutral gray
+					gray: '#8C9DAD'        // Soft gray
 				}
 			},
 			borderRadius: {
