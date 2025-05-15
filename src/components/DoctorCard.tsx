@@ -25,7 +25,7 @@ const DoctorCard = ({
   price 
 }: DoctorCardProps) => {
   return (
-    <div className="medical-card h-full flex flex-col">
+    <div className="medical-card h-full flex flex-col border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
       <div className="relative">
         <img 
           src={image} 
@@ -41,7 +41,7 @@ const DoctorCard = ({
       <div className="p-4 flex-grow flex flex-col">
         <div className="flex items-center mb-2">
           <div className="flex items-center">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 ml-1" />
             <span className="text-gray-700 font-medium">{rating}</span>
           </div>
           <span className="text-gray-500 text-sm mx-2">·</span>

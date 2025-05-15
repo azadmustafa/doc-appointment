@@ -3,7 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Brain, Stethoscope, Eye, Bone, Activity, Scissors, Pill, Baby, Tooth, Ear, Lungs, Thermometer } from "lucide-react";
+import { Heart, Brain, Stethoscope, Eye, Bone, Activity, 
+         Scissors, Pill, Baby, Smile, Ear, Thermometer, Loader } from "lucide-react";
 
 const specialties = [
   { icon: Heart, title: "قلب وأوعية دموية", count: 28, color: "#e74c3c" },
@@ -15,9 +16,9 @@ const specialties = [
   { icon: Scissors, title: "جراحة", count: 25, color: "#e67e22" },
   { icon: Pill, title: "أمراض جلدية", count: 18, color: "#8e44ad" },
   { icon: Baby, title: "طب الأطفال", count: 24, color: "#2980b9" },
-  { icon: Tooth, title: "طب الأسنان", count: 33, color: "#27ae60" },
+  { icon: Smile, title: "طب الأسنان", count: 33, color: "#27ae60" },
   { icon: Ear, title: "أنف وأذن وحنجرة", count: 14, color: "#c0392b" },
-  { icon: Lungs, title: "الجهاز التنفسي", count: 19, color: "#16a085" },
+  { icon: Loader, title: "الجهاز التنفسي", count: 19, color: "#16a085" },
   { icon: Thermometer, title: "طب مختبرات", count: 8, color: "#d35400" },
 ];
 

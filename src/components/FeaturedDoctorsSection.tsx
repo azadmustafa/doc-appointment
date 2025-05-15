@@ -130,8 +130,6 @@ const FeaturedDoctorsSection = () => {
           opts={{
             align: "start",
             loop: true,
-            autoplay: true,
-            interval: 5000,
           }}
           className="w-full mx-auto"
         >
