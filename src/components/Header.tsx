@@ -1,264 +1,271 @@
-
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Menu, X, Calendar, User, LogIn, LogOut, Stethoscope, FileText, Tag, MessageCircle, HelpCircle, Map, LayoutDashboard } from "lucide-react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import LanguageSwitcher from './LanguageSwitcher';
-import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
+import {
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuLabel,
+} from "@/components/ui/menu";
+import { Button } from "@/components/ui/button";
+import {
+  Home,
+  User,
+  Settings,
+  HelpCircle,
+  LogOut,
+  LogIn,
+  Edit,
+  DollarSign,
+} from "lucide-react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
+  const userMenuItems = [
+    {
+      label: "تعديل الملف الشخصي",
+      icon: "edit",
+      href: "/dashboard",
+    },
+    {
+      label: "الإعدادات",
+      icon: "settings",
+      href: "/settings",
+    },
+    {
+      label: "طلبات التسعير",
+      icon: "dollar-sign",
+      href: "/my-quotes",
+    },
+    {
+      label: "المساعدة",
+      icon: "help-circle",
+      href: "/faq",
+    },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2">
-          <Calendar className="h-8 w-8 text-medical-primary" />
-          <span className="font-bold text-xl text-gray-700">طبيبي</span>
+    <header className="bg-white shadow-md sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo Section */}
+        <Link to="/" className="text-xl font-bold text-medical-primary">
+          شفاء
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            {t('common.home')}
+          <Link to="/" className="hover:text-medical-primary">
+            {t("home")}
           </Link>
-          <Link to="/doctors" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            {t('common.doctors')}
+          <Link to="/doctors" className="hover:text-medical-primary">
+            {t("doctors")}
           </Link>
-          <Link to="/hospitals" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            المشافي
+          <Link to="/hospitals" className="hover:text-medical-primary">
+            {t("hospitals")}
           </Link>
-          <Link to="/beauty-centers" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            مراكز التجميل
+          <Link to="/beauty-centers" className="hover:text-medical-primary">
+            {t("beautyCenters")}
           </Link>
-          <Link to="/consultation" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            الاستشارات
+          <Link to="/promotions" className="hover:text-medical-primary">
+            {t("offers")}
           </Link>
-          <Link to="/promotions" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            العروض
+          <Link to="/contact" className="hover:text-medical-primary">
+            {t("contactUs")}
           </Link>
-          <Link to="/terms-pricing" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            التسعير
-          </Link>
-          <Link to="/faq" className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200">
-            الأسئلة الشائعة
+          <Link to="/about" className="hover:text-medical-primary">
+            {t("aboutUs")}
           </Link>
         </nav>
-        
-        <div className="hidden md:flex items-center space-x-3">
+
+        {/* Auth Buttons */}
+        <div className="hidden md:flex items-center space-x-4">
           <LanguageSwitcher />
-          
           {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={user?.image} alt={user?.name} />
-                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
+            <Menu>
+              <MenuTrigger asChild>
+                <Button variant="ghost">
+                  <User className="mr-2 h-4 w-4" />
+                  {user?.name}
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel>حسابي</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer" onClick={() => user?.role === "doctor" ? navigate('/doctor-dashboard') : navigate('/appointments')}>
-                  <LayoutDashboard className="ml-2 h-4 w-4" />
-                  {user?.role === "doctor" ? "لوحة التحكم" : "حجوزاتي"}
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/profile')}>
-                  <User className="ml-2 h-4 w-4" />
-                  الملف الشخصي
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-red-500" onClick={handleLogout}>
-                  <LogOut className="ml-2 h-4 w-4" />
+              </MenuTrigger>
+              <MenuContent align="end">
+                <MenuLabel>My Account</MenuLabel>
+                {userMenuItems.map((item) => (
+                  <MenuItem key={item.label} asChild>
+                    <Link to={item.href} className="flex items-center">
+                      {item.icon === "edit" && (
+                        <Edit className="mr-2 h-4 w-4" />
+                      )}
+                      {item.icon === "settings" && (
+                        <Settings className="mr-2 h-4 w-4" />
+                      )}
+                      {item.icon === "help-circle" && (
+                        <HelpCircle className="mr-2 h-4 w-4" />
+                      )}
+                      {item.icon === "dollar-sign" && (
+                        <DollarSign className="mr-2 h-4 w-4" />
+                      )}
+                      <span>{item.label}</span>
+                    </Link>
+                  </MenuItem>
+                ))}
+                <MenuItem onSelect={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
                   تسجيل الخروج
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </MenuItem>
+              </MenuContent>
+            </Menu>
           ) : (
             <>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-medical-primary text-medical-primary hover:bg-medical-light"
-                onClick={() => navigate('/login')}
-              >
-                <LogIn className="h-4 w-4 ml-1" /> {t('common.login')}
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-medical-primary text-medical-primary hover:bg-medical-light"
-                onClick={() => navigate('/doctor-login')}
-              >
-                <Stethoscope className="h-4 w-4 ml-1" /> دخول الأطباء
-              </Button>
-              <Button 
-                className="bg-medical-primary hover:bg-medical-dark"
-                onClick={() => navigate('/register')}
-              >
-                <User className="h-4 w-4 ml-1" /> {t('common.register')}
-              </Button>
+              <Link to="/login">
+                <Button variant="outline">{t("login")}</Button>
+              </Link>
+              <Link to="/register">
+                <Button>{t("register")}</Button>
+              </Link>
             </>
           )}
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center space-x-2">
-          <LanguageSwitcher />
-          {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.image} alt={user?.name} />
-                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel>حسابي</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer" onClick={() => user?.role === "doctor" ? navigate('/doctor-dashboard') : navigate('/appointments')}>
-                  <LayoutDashboard className="ml-2 h-4 w-4" />
-                  {user?.role === "doctor" ? "لوحة التحكم" : "حجوزاتي"}
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/profile')}>
-                  <User className="ml-2 h-4 w-4" />
-                  الملف الشخصي
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-red-500" onClick={handleLogout}>
-                  <LogOut className="ml-2 h-4 w-4" />
-                  تسجيل الخروج
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
-          <button 
-            className="text-gray-700 focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button
+            onClick={toggleMenu}
+            className="text-gray-500 hover:text-medical-primary focus:outline-none"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
           </button>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t py-4">
-          <div className="container mx-auto px-4 flex flex-col space-y-4">
-            <Link 
-              to="/" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-full right-0 bg-white shadow-md rounded-md mt-2 py-2 w-48">
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              {t('common.home')}
+              {t("home")}
             </Link>
-            <Link 
-              to="/doctors" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+            <Link
+              to="/doctors"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              {t('common.doctors')}
+              {t("doctors")}
             </Link>
-            <Link 
-              to="/hospitals" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+            <Link
+              to="/hospitals"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              المشافي
+              {t("hospitals")}
             </Link>
-            <Link 
-              to="/beauty-centers" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+            <Link
+              to="/beauty-centers"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              مراكز التجميل
+              {t("beautyCenters")}
             </Link>
-            <Link 
-              to="/consultation" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+            <Link
+              to="/promotions"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              الاستشارات
+              {t("offers")}
             </Link>
-            <Link 
-              to="/promotions" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+            <Link
+              to="/contact"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              العروض
+              {t("contactUs")}
             </Link>
-            <Link 
-              to="/terms-pricing" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
+            <Link
+              to="/about"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
             >
-              التسعير
+              {t("aboutUs")}
             </Link>
-            <Link 
-              to="/faq" 
-              className="font-medium text-gray-600 hover:text-medical-primary transition-colors duration-200 py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              الأسئلة الشائعة
-            </Link>
-            {!isAuthenticated && (
-              <div className="flex flex-col space-y-2 pt-2 border-t">
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-center border-medical-primary text-medical-primary hover:bg-medical-light"
-                  onClick={() => {
-                    navigate('/login');
-                    setIsMenuOpen(false);
-                  }}
+            {!isAuthenticated ? (
+              <>
+                <Link
+                  to="/login"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={closeMenu}
                 >
-                  <LogIn className="h-4 w-4 ml-2" /> {t('common.login')}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-center border-medical-primary text-medical-primary hover:bg-medical-light"
-                  onClick={() => {
-                    navigate('/doctor-login');
-                    setIsMenuOpen(false);
-                  }}
+                  {t("login")}
+                </Link>
+                <Link
+                  to="/register"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={closeMenu}
                 >
-                  <Stethoscope className="h-4 w-4 ml-2" /> دخول الأطباء
-                </Button>
-                <Button 
-                  className="w-full justify-center bg-medical-primary hover:bg-medical-dark"
+                  {t("register")}
+                </Link>
+              </>
+            ) : (
+              <>
+                {userMenuItems.map((item) => (
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={closeMenu}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <button
                   onClick={() => {
-                    navigate('/register');
-                    setIsMenuOpen(false);
+                    handleLogout();
+                    closeMenu();
                   }}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
-                  <User className="h-4 w-4 ml-2" /> {t('common.register')}
-                </Button>
-              </div>
+                  تسجيل الخروج
+                </button>
+              </>
             )}
+            <LanguageSwitcher />
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 };

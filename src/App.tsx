@@ -20,6 +20,7 @@ import DoctorDashboard from "./pages/DoctorDashboard";
 import TermsAndPricing from "./pages/TermsAndPricing";
 import FAQ from "./pages/FAQ";
 import ServiceQuote from "./pages/ServiceQuote";
+import UserQuotes from "./pages/UserQuotes";
 import GeoSearch from "./pages/GeoSearch";
 import BeautyCenters from "./pages/BeautyCenters";
 import Dashboard from "./pages/Dashboard";

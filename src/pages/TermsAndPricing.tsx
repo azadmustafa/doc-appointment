@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { X, CheckCircle, FileText, DollarSign, QuestionCircle } from 'lucide-react';
+import { X, Check, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -176,7 +175,7 @@ const TermsAndPricing = () => {
                 <FileText className="h-5 w-5 ml-2" /> الشروط والأحكام
               </TabsTrigger>
               <TabsTrigger value="faq" className="text-lg">
-                <QuestionCircle className="h-5 w-5 ml-2" /> الأسئلة الشائعة
+                <HelpCircle className="h-5 w-5 ml-2" /> الأسئلة الشائعة
               </TabsTrigger>
             </TabsList>
             
@@ -225,7 +224,7 @@ const TermsAndPricing = () => {
                         {plan.features.map((feature, i) => (
                           <li key={i} className="flex items-center">
                             {feature.included ? (
-                              <CheckCircle className="h-5 w-5 text-green-500 ml-2 flex-shrink-0" />
+                              <Check className="h-5 w-5 text-green-500 ml-2 flex-shrink-0" />
                             ) : (
                               <X className="h-5 w-5 text-red-500 ml-2 flex-shrink-0" />
                             )}
@@ -319,7 +318,7 @@ const TermsAndPricing = () => {
             <TabsContent value="faq" className="mt-4">
               <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm">
                 <div className="flex items-center mb-8">
-                  <QuestionCircle className="h-10 w-10 text-medical-primary ml-4" />
+                  <HelpCircle className="h-10 w-10 text-medical-primary ml-4" />
                   <h2 className="text-2xl font-semibold text-gray-700">الأسئلة الشائعة</h2>
                 </div>
                 

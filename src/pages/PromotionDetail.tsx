@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, MapPin, Percent, Clock, Tag, ArrowLeft, User, Home } from 'lucide-react';
@@ -58,7 +57,7 @@ const promotionData = {
     "زراعة الأسنان",
     "تقويم الأسنان"
   ],
-  redemptionInstructions: "للاستفادة من العرض، يرجى حجز موعد عبر الموقع أو الاتصال بالعيادة مباشرة. عند الحضور، يرجى الإشارة إلى أنك تريد الاستفادة من العرض الخاص بالكشف والأشعة.",
+  redemptionInstructions: "للاستفادة من ��لعرض، يرجى حجز موعد عبر الموقع أو الاتصال بالعيادة مباشرة. عند الحضور، يرجى الإشارة إلى أنك تريد الاستفادة من العرض الخاص بالكشف والأشعة.",
   highlights: [
     "خصم 40% على سعر الكشف الأصلي",
     "يشمل الأشعة التشخيصية مجاناً",
@@ -210,7 +209,7 @@ const PromotionDetail = () => {
                 <div className="bg-gray-50 p-4 rounded-lg mb-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-500 text-sm">السعر الأصلي</p>
+                      <p className="text-gray-500 text-sm">��لسعر الأصلي</p>
                       <p className="text-gray-400 line-through">{promotionData.originalPrice.toLocaleString()} {promotionData.currency}</p>
                     </div>
                     <div>
@@ -333,7 +332,9 @@ const PromotionDetail = () => {
                     <p className="text-medical-primary mb-2">{promotionData.provider.specialty}</p>
                     
                     <div className="flex items-center mb-4">
-                      <Star className="h-5 w-5 text-yellow-400 fill-yellow-400 ml-1" />
+                      <svg className="text-yellow-400 fill-yellow-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
                       <span className="font-semibold ml-1">{promotionData.provider.rating}</span>
                       <span className="text-gray-500 text-sm">({promotionData.provider.reviewCount} تقييم)</span>
                     </div>
