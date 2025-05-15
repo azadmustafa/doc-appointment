@@ -1,27 +1,27 @@
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import enTranslation from './locales/en';
-import arTranslation from './locales/ar';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+import ar from './locales/ar';
+import en from './locales/en';
 
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: {
-        translation: enTranslation
-      },
       ar: {
-        translation: arTranslation
+        translation: ar
+      },
+      en: {
+        translation: en
       }
     },
-    lng: 'ar', // اللغة الافتراضية هي العربية
+    lng: 'ar',
     fallbackLng: 'ar',
     interpolation: {
-      escapeValue: false // لا داعي للهروب من أحرف HTML الخاصة
-    },
-    react: {
-      useSuspense: false
+      escapeValue: false
     }
   });
 
