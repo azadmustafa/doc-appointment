@@ -4,13 +4,6 @@ import { Link } from "react-router-dom";
 import { Video, Phone, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 // بيانات وهمية للأطباء المتاحين للاستشارات
 const onlineDoctors = [
@@ -23,7 +16,8 @@ const onlineDoctors = [
     reviewCount: 124,
     isVideoEnabled: true,
     price: 75,
-    status: "متاح الآن"
+    status: "متاح الآن",
+    homeVisit: false
   },
   {
     id: 102,
@@ -34,7 +28,8 @@ const onlineDoctors = [
     reviewCount: 86,
     isVideoEnabled: true,
     price: 60,
-    status: "متاح الآن"
+    status: "متاح الآن",
+    homeVisit: true
   },
   {
     id: 103,
@@ -45,7 +40,8 @@ const onlineDoctors = [
     reviewCount: 92,
     isVideoEnabled: false,
     price: 50,
-    status: "متاح الآن"
+    status: "متاح الآن",
+    homeVisit: false
   },
   {
     id: 104,
@@ -56,7 +52,8 @@ const onlineDoctors = [
     reviewCount: 78,
     isVideoEnabled: true,
     price: 85,
-    status: "متاح الآن"
+    status: "متاح الآن",
+    homeVisit: true
   }
 ];
 
@@ -75,94 +72,103 @@ const OnlineDoctors = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-700">الاستشارات الطبية المباشرة</h2>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button 
               variant={consultType === 'all' ? "default" : "outline"} 
               size="sm" 
               onClick={() => setConsultType('all')}
-              className={`mr-2 ${consultType === 'all' ? 'bg-medical-primary' : 'border-medical-primary text-medical-primary'}`}
+              className={consultType === 'all' ? 'bg-medical-primary' : 'border-medical-primary text-medical-primary'}
             >
               الكل
             </Button>
-            <Button 
-              variant={consultType === 'video' ? "default" : "outline"} 
-              size="sm" 
-              onClick={() => setConsultType('video')}
-              className={`flex items-center mr-2 ${consultType === 'video' ? 'bg-medical-primary' : 'border-medical-primary text-medical-primary'}`}
-            >
-              <Video className="w-4 h-4 ml-1" />
-              فيديو
-            </Button>
-            <Button 
-              variant={consultType === 'phone' ? "default" : "outline"} 
-              size="sm" 
-              onClick={() => setConsultType('phone')}
-              className={`flex items-center ${consultType === 'phone' ? 'bg-medical-primary' : 'border-medical-primary text-medical-primary'}`}
-            >
-              <Phone className="w-4 h-4 ml-1" />
-              صوت
-            </Button>
+            <Link to="/doctors?consultation=video">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center border-medical-primary text-medical-primary"
+              >
+                <Video className="w-4 h-4 ml-1" />
+                استشارة فيديو
+              </Button>
+            </Link>
+            <Link to="/doctors?consultation=phone">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center border-medical-primary text-medical-primary"
+              >
+                <Phone className="w-4 h-4 ml-1" />
+                استشارة صوتية
+              </Button>
+            </Link>
+            <Link to="/doctors?homeVisit=true">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center border-medical-primary text-medical-primary"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 ml-1">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                زيارة منزلية
+              </Button>
+            </Link>
           </div>
         </div>
         
-        <Carousel className="w-full">
-          <CarouselContent>
-            {filteredDoctors.map((doctor) => (
-              <CarouselItem key={doctor.id} className="md:basis-1/3 lg:basis-1/4">
-                <div className="medical-card h-full flex flex-col m-1 bg-white shadow-md hover:shadow-lg transition-all duration-300">
-                  <div className="relative">
-                    <img 
-                      src={doctor.image} 
-                      alt={doctor.name} 
-                      className="w-full h-40 object-cover object-center"
-                    />
-                    <Badge className="absolute top-2 right-2 bg-green-500">
-                      {doctor.status}
-                    </Badge>
-                    {doctor.isVideoEnabled ? (
-                      <Badge variant="outline" className="absolute top-2 left-2 bg-white">
-                        <Video className="w-3 h-3 ml-1" />
-                        فيديو
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="absolute top-2 left-2 bg-white">
-                        <Phone className="w-3 h-3 ml-1" />
-                        صوت
-                      </Badge>
-                    )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredDoctors.map((doctor) => (
+            <div key={doctor.id} className="medical-card h-full flex flex-col bg-white shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="relative">
+                <img 
+                  src={doctor.image} 
+                  alt={doctor.name} 
+                  className="w-full h-40 object-cover object-center"
+                />
+                <Badge className="absolute top-2 right-2 bg-green-500">
+                  {doctor.status}
+                </Badge>
+                {doctor.isVideoEnabled ? (
+                  <Badge variant="outline" className="absolute top-2 left-2 bg-white">
+                    <Video className="w-3 h-3 ml-1" />
+                    فيديو
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="absolute top-2 left-2 bg-white">
+                    <Phone className="w-3 h-3 ml-1" />
+                    صوت
+                  </Badge>
+                )}
+              </div>
+              
+              <div className="p-4 flex-grow flex flex-col">
+                <h3 className="font-semibold text-lg text-gray-700">{doctor.name}</h3>
+                <p className="text-sm text-medical-primary">{doctor.specialty}</p>
+                
+                <div className="flex items-center my-2">
+                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 ml-1" />
+                  <span className="text-gray-700 font-medium">{doctor.rating}</span>
+                  <span className="text-gray-500 text-sm mx-2">·</span>
+                  <span className="text-gray-500 text-sm">{doctor.reviewCount} تقييم</span>
+                </div>
+                
+                <div className="mt-auto">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-gray-500 text-sm">سعر الاستشارة</span>
+                    <span className="text-medical-primary font-semibold">{doctor.price} دولار</span>
                   </div>
                   
-                  <div className="p-4 flex-grow flex flex-col">
-                    <h3 className="font-semibold text-lg text-gray-700">{doctor.name}</h3>
-                    <p className="text-sm text-medical-primary">{doctor.specialty}</p>
-                    
-                    <div className="flex items-center my-2">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 ml-1" />
-                      <span className="text-gray-700 font-medium">{doctor.rating}</span>
-                      <span className="text-gray-500 text-sm mx-2">·</span>
-                      <span className="text-gray-500 text-sm">{doctor.reviewCount} تقييم</span>
-                    </div>
-                    
-                    <div className="mt-auto">
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-gray-500 text-sm">سعر الاستشارة</span>
-                        <span className="text-medical-primary font-semibold">{doctor.price} دولار</span>
-                      </div>
-                      
-                      <Link to={`/doctors/${doctor.id}?consultation=true`}>
-                        <Button className="w-full bg-medical-primary hover:bg-medical-dark">
-                          استشارة الآن
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
+                  <Link to={`/doctors/${doctor.id}?consultation=true`}>
+                    <Button className="w-full bg-medical-primary hover:bg-medical-dark">
+                      استشارة الآن
+                    </Button>
+                  </Link>
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-0" />
-          <CarouselNext className="right-0" />
-        </Carousel>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

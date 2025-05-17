@@ -38,4 +38,16 @@ const MenuItem = React.forwardRef<
 ))
 MenuItem.displayName = MenuPrimitive.Item.displayName
 
-export { Menu, MenuTrigger, MenuContent, MenuItem }
+const MenuLabel = React.forwardRef<
+  React.ElementRef<typeof MenuPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Label>
+>(({ className, ...props }, ref) => (
+  <MenuPrimitive.Label
+    ref={ref}
+    className={cn("px-2 py-1.5 text-sm font-semibold", className)}
+    {...props}
+  />
+))
+MenuLabel.displayName = MenuPrimitive.Label.displayName
+
+export { Menu, MenuTrigger, MenuContent, MenuItem, MenuLabel }

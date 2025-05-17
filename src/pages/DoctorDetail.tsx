@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { 
   MapPin, 
@@ -11,19 +11,24 @@ import {
   ThumbsUp,
   User,
   CreditCard,
-  CheckCircle
+  CheckCircle,
+  Language,
+  Image as ImageIcon,
+  X
 } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogTrigger
 } from "@/components/ui/dialog";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -41,6 +46,8 @@ const doctorData = {
   address: "شارع العليا، مجمع الطبي، الطابق الثالث، عيادة رقم 305",
   price: 350,
   experience: 15,
+  consultationDuration: "30 دقيقة",
+  languages: ["العربية", "الإنجليزية", "الفرنسية"],
   about: "استشاري أمراض القلب والأوعية الدموية مع خبرة أكثر من 15 عامًا في تشخيص وعلاج أمراض القلب. حاصل على البورد الأمريكي في طب القلب وزمالة جامعة هارفارد في قسطرة القلب التداخلية. متخصص في علاج مشاكل القلب المختلفة مثل الذبحة الصدرية، اعتلال عضلة القلب، وارتفاع ضغط الدم.",
   education: [
     {
@@ -67,6 +74,45 @@ const doctorData = {
     "رسم القلب بالمجهود",
     "استشارات ما قبل العمليات الجراحية"
   ],
+  clinics: [
+    {
+      id: 1,
+      name: "عيادة الدكتور أحمد - المجمع الطبي الحديث",
+      address: "شارع العليا، مجمع الطبي، الطابق الثالث، عيادة رقم 305",
+      phone: "+966 11 234 5678",
+      workHours: "السبت - الخميس: 9 صباحًا - 5 مساءًا",
+      price: 350,
+      images: [
+        "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1504439468489-c8920d796a29?ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3"
+      ]
+    },
+    {
+      id: 2,
+      name: "مركز القلب التخصصي",
+      address: "طريق الملك فهد، برج الفيصلية الطبي، الطابق السابع، جناح 712",
+      phone: "+966 11 987 6543",
+      workHours: "الأحد - الخميس: 10 صباحًا - 6 مساءًا",
+      price: 450,
+      images: [
+        "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1580281780460-82d277b0e3f8?ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1631815588090-d4bfec5b7784?ixlib=rb-4.0.3"
+      ]
+    }
+  ],
+  ratings: {
+    overall: 4.9,
+    count: 124,
+    distribution: {
+      5: 92,
+      4: 27,
+      3: 3,
+      2: 1,
+      1: 1
+    }
+  },
   reviews: [
     {
       id: 1,
@@ -111,11 +157,18 @@ const timeSlots = [
 ];
 
 const DoctorDetail = () => {
+  useEffect(() => {
+    // Scroll to the top of the page when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { id } = useParams();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedClinic, setSelectedClinic] = useState<number>(doctorData.clinics[0].id);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [bookingInfo, setBookingInfo] = useState({
     name: "",
     phone: "",
@@ -131,6 +184,11 @@ const DoctorDetail = () => {
   const handleBookAppointment = () => {
     setBookingModalOpen(false);
     setConfirmationModalOpen(true);
+  };
+
+  // Calculate rating percentages
+  const getRatingPercentage = (rating: number) => {
+    return (doctorData.ratings.distribution[rating as keyof typeof doctorData.ratings.distribution] / doctorData.ratings.count) * 100;
   };
 
   return (
@@ -176,6 +234,17 @@ const DoctorDetail = () => {
                         <MapPin className="h-5 w-5 text-gray-500 mr-1" />
                         <span className="text-gray-700">{doctorData.address}</span>
                       </div>
+                      
+                      <div className="flex flex-wrap items-center gap-2 mt-3">
+                        <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
+                          <Clock className="h-4 w-4 text-gray-600 ml-1" />
+                          <span className="text-sm">{doctorData.consultationDuration}</span>
+                        </div>
+                        <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
+                          <Language className="h-4 w-4 text-gray-600 ml-1" />
+                          <span className="text-sm">{doctorData.languages.join(', ')}</span>
+                        </div>
+                      </div>
                     </div>
                     
                     <div className="mt-4 md:mt-0 flex flex-col items-start md:items-end">
@@ -205,6 +274,7 @@ const DoctorDetail = () => {
               <TabsTrigger value="about" className="text-lg">نبذة عن الطبيب</TabsTrigger>
               <TabsTrigger value="education" className="text-lg">المؤهلات العلمية</TabsTrigger>
               <TabsTrigger value="services" className="text-lg">الخدمات الطبية</TabsTrigger>
+              <TabsTrigger value="clinics" className="text-lg">العيادات</TabsTrigger>
               <TabsTrigger value="reviews" className="text-lg">التقييمات</TabsTrigger>
             </TabsList>
             
@@ -237,8 +307,8 @@ const DoctorDetail = () => {
                               <Clock className="h-5 w-5 text-medical-primary" />
                             </div>
                             <div className="ml-3">
-                              <div className="text-sm text-gray-500">وقت الانتظار</div>
-                              <div className="font-medium">15-20 دقيقة</div>
+                              <div className="text-sm text-gray-500">مدة الكشف</div>
+                              <div className="font-medium">{doctorData.consultationDuration}</div>
                             </div>
                           </div>
                           
@@ -259,6 +329,16 @@ const DoctorDetail = () => {
                             <div className="ml-3">
                               <div className="text-sm text-gray-500">التصنيف</div>
                               <div className="font-medium">استشاري</div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 rounded-full bg-medical-light flex items-center justify-center">
+                              <Language className="h-5 w-5 text-medical-primary" />
+                            </div>
+                            <div className="ml-3">
+                              <div className="text-sm text-gray-500">اللغات</div>
+                              <div className="font-medium">{doctorData.languages.join(', ')}</div>
                             </div>
                           </div>
                         </div>
@@ -309,58 +389,161 @@ const DoctorDetail = () => {
               </Card>
             </TabsContent>
             
-            <TabsContent value="reviews">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold">تقييمات المرضى</h2>
-                    <div className="flex items-center">
-                      <span className="text-2xl font-bold">{doctorData.rating}</span>
-                      <Star className="h-6 w-6 fill-yellow-400 text-yellow-400 ml-1" />
-                      <span className="text-gray-500 ml-1">({doctorData.reviewCount})</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-6">
-                    {doctorData.reviews.map((review) => (
-                      <div key={review.id} className="border-b border-gray-200 pb-6 last:border-0">
-                        <div className="flex justify-between">
-                          <div className="flex items-center">
-                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                              <User className="h-6 w-6 text-gray-500" />
-                            </div>
-                            <div className="ml-3">
-                              <div className="font-medium">{review.name}</div>
-                              <div className="text-gray-500 text-sm">
-                                {new Date(review.date).toLocaleDateString('ar-SA', { 
-                                  year: 'numeric', 
-                                  month: 'long', 
-                                  day: 'numeric' 
-                                })}
+            <TabsContent value="clinics">
+              <div className="space-y-6">
+                {doctorData.clinics.map((clinic) => (
+                  <Card key={clinic.id} className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="p-6">
+                        <h2 className="text-xl font-semibold mb-2">{clinic.name}</h2>
+                        
+                        <div className="flex flex-col md:flex-row md:items-start gap-6">
+                          <div className="md:w-2/3">
+                            <div className="space-y-4">
+                              <div className="flex items-start">
+                                <MapPin className="h-5 w-5 text-medical-primary mt-1 ml-2" />
+                                <div>
+                                  <h3 className="font-medium mb-1">العنوان</h3>
+                                  <p className="text-gray-600">{clinic.address}</p>
+                                </div>
                               </div>
+                              
+                              <div className="flex items-start">
+                                <Clock className="h-5 w-5 text-medical-primary mt-1 ml-2" />
+                                <div>
+                                  <h3 className="font-medium mb-1">أوقات العمل</h3>
+                                  <p className="text-gray-600">{clinic.workHours}</p>
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-start">
+                                <CreditCard className="h-5 w-5 text-medical-primary mt-1 ml-2" />
+                                <div>
+                                  <h3 className="font-medium mb-1">سعر الكشف</h3>
+                                  <p className="text-gray-600">{clinic.price} ريال</p>
+                                </div>
+                              </div>
+                              
+                              <Button 
+                                className="bg-medical-primary hover:bg-medical-dark"
+                                onClick={() => {
+                                  setSelectedClinic(clinic.id);
+                                  setBookingModalOpen(true);
+                                }}
+                              >
+                                حجز موعد في هذه العيادة
+                              </Button>
                             </div>
                           </div>
                           
-                          <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                className={`h-5 w-5 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
-                              />
-                            ))}
+                          <div className="md:w-1/3">
+                            <h3 className="font-medium flex items-center mb-3">
+                              <ImageIcon className="h-5 w-5 mr-1" />
+                              معرض الصور
+                            </h3>
+                            <div className="grid grid-cols-3 gap-2">
+                              {clinic.images.map((image, index) => (
+                                <div 
+                                  key={index} 
+                                  className="cursor-pointer rounded-md overflow-hidden hover:opacity-90 transition-opacity"
+                                  onClick={() => setSelectedImage(image)}
+                                >
+                                  <img 
+                                    src={image} 
+                                    alt={`صورة العيادة ${index+1}`} 
+                                    className="h-20 w-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="reviews">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row gap-8">
+                    <div className="md:w-1/3">
+                      <div className="bg-gray-50 p-6 rounded-lg text-center">
+                        <div className="text-4xl font-bold text-medical-primary mb-2">{doctorData.ratings.overall}</div>
+                        <div className="flex justify-center mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <Star 
+                              key={i} 
+                              className={`h-5 w-5 ${i < Math.round(doctorData.ratings.overall) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
+                            />
+                          ))}
+                        </div>
+                        <div className="text-gray-500">بناءً على {doctorData.ratings.count} تقييم</div>
                         
-                        <p className="mt-3 text-gray-700">{review.comment}</p>
-                        
-                        <div className="mt-2">
-                          <button className="flex items-center text-gray-500 text-sm hover:text-medical-primary">
-                            <ThumbsUp className="h-4 w-4 mr-1" />
-                            <span>مفيد</span>
-                          </button>
+                        <div className="mt-6 space-y-3">
+                          {[5, 4, 3, 2, 1].map((rating) => (
+                            <div key={rating} className="flex items-center">
+                              <span className="w-8 text-right">{rating}</span>
+                              <Star className="h-4 w-4 mx-1 fill-yellow-400 text-yellow-400" />
+                              <div className="flex-grow mx-2">
+                                <Progress value={getRatingPercentage(rating)} className="h-2" />
+                              </div>
+                              <span className="text-gray-500 text-sm">
+                                {doctorData.ratings.distribution[rating as keyof typeof doctorData.ratings.distribution]}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
+                    </div>
+                    
+                    <div className="md:w-2/3">
+                      <h2 className="text-xl font-semibold mb-6">آراء المرضى</h2>
+                      
+                      <div className="space-y-6">
+                        {doctorData.reviews.map((review) => (
+                          <div key={review.id} className="border-b border-gray-200 pb-6 last:border-0">
+                            <div className="flex justify-between">
+                              <div className="flex items-center">
+                                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                  <User className="h-6 w-6 text-gray-500" />
+                                </div>
+                                <div className="ml-3">
+                                  <div className="font-medium">{review.name}</div>
+                                  <div className="text-gray-500 text-sm">
+                                    {new Date(review.date).toLocaleDateString('ar-SA', { 
+                                      year: 'numeric', 
+                                      month: 'long', 
+                                      day: 'numeric' 
+                                    })}
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div className="flex">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star 
+                                    key={i} 
+                                    className={`h-5 w-5 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            
+                            <p className="mt-3 text-gray-700">{review.comment}</p>
+                            
+                            <div className="mt-2">
+                              <button className="flex items-center text-gray-500 text-sm hover:text-medical-primary">
+                                <ThumbsUp className="h-4 w-4 mr-1" />
+                                <span>مفيد</span>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -375,6 +558,21 @@ const DoctorDetail = () => {
           <DialogHeader>
             <DialogTitle className="text-xl text-center">حجز موعد مع {doctorData.name}</DialogTitle>
           </DialogHeader>
+          
+          <div>
+            <h3 className="font-medium mb-2">العيادة</h3>
+            <select 
+              className="w-full rounded-md border-gray-300 mb-4" 
+              value={selectedClinic}
+              onChange={(e) => setSelectedClinic(Number(e.target.value))}
+            >
+              {doctorData.clinics.map((clinic) => (
+                <option key={clinic.id} value={clinic.id}>
+                  {clinic.name} - {clinic.price} ريال
+                </option>
+              ))}
+            </select>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
             <div>
@@ -503,6 +701,10 @@ const DoctorDetail = () => {
                 <span>{doctorData.specialty}</span>
               </div>
               <div className="flex justify-between mb-2">
+                <span className="font-medium">العيادة:</span>
+                <span>{doctorData.clinics.find(c => c.id === selectedClinic)?.name}</span>
+              </div>
+              <div className="flex justify-between mb-2">
                 <span className="font-medium">التاريخ:</span>
                 <span>{selectedDate && format(selectedDate, 'dd/MM/yyyy')}</span>
               </div>
@@ -512,7 +714,9 @@ const DoctorDetail = () => {
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">رسوم الكشف:</span>
-                <span className="text-medical-primary font-semibold">{doctorData.price} ريال</span>
+                <span className="text-medical-primary font-semibold">
+                  {doctorData.clinics.find(c => c.id === selectedClinic)?.price} ريال
+                </span>
               </div>
             </div>
             
@@ -526,6 +730,29 @@ const DoctorDetail = () => {
             >
               موافق
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Image Gallery Modal */}
+      <Dialog open={selectedImage !== null} onOpenChange={(open) => !open && setSelectedImage(null)}>
+        <DialogContent className="sm:max-w-[80vw] max-h-[90vh] p-1">
+          <div className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute top-2 right-2 rounded-full bg-black bg-opacity-40 text-white hover:bg-opacity-60 z-10"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+            {selectedImage && (
+              <img 
+                src={selectedImage} 
+                alt="صورة العيادة"
+                className="w-full max-h-[80vh] object-contain" 
+              />
+            )}
           </div>
         </DialogContent>
       </Dialog>

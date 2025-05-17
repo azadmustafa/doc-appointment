@@ -19,6 +19,11 @@ import OnlineDoctors from "@/components/OnlineDoctors";
 import BeautyCentersSection from "@/components/BeautyCentersSection";
 
 const Index = () => {
+  useEffect(() => {
+    // Scroll to the top of the page when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
