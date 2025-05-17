@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { 
@@ -12,7 +11,7 @@ import {
   User,
   CreditCard,
   CheckCircle,
-  Language,
+  Languages,
   Image as ImageIcon,
   X
 } from "lucide-react";
@@ -80,7 +79,7 @@ const doctorData = {
       name: "عيادة الدكتور أحمد - المجمع الطبي الحديث",
       address: "شارع العليا، مجمع الطبي، الطابق الثالث، عيادة رقم 305",
       phone: "+966 11 234 5678",
-      workHours: "السبت - الخميس: 9 صباحًا - 5 مساءًا",
+      workHours: "السبت - الخميس: 9 صباحًا - 5 مساءً",
       price: 350,
       images: [
         "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3",
@@ -91,9 +90,9 @@ const doctorData = {
     {
       id: 2,
       name: "مركز القلب التخصصي",
-      address: "طريق الملك فهد، برج الفيصلية الطبي، الطابق السابع، جناح 712",
+      address: "طريق ا��ملك فهد، برج الفيصلية الطبي، الطابق السابع، جناح 712",
       phone: "+966 11 987 6543",
-      workHours: "الأحد - الخميس: 10 صباحًا - 6 مساءًا",
+      workHours: "الأحد - الخميس: 10 صباحًا - 6 مساءً",
       price: 450,
       images: [
         "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3",
@@ -241,7 +240,7 @@ const DoctorDetail = () => {
                           <span className="text-sm">{doctorData.consultationDuration}</span>
                         </div>
                         <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
-                          <Language className="h-4 w-4 text-gray-600 ml-1" />
+                          <Languages className="h-4 w-4 text-gray-600 ml-1" />
                           <span className="text-sm">{doctorData.languages.join(', ')}</span>
                         </div>
                       </div>
@@ -334,7 +333,7 @@ const DoctorDetail = () => {
                           
                           <div className="flex items-center">
                             <div className="w-10 h-10 rounded-full bg-medical-light flex items-center justify-center">
-                              <Language className="h-5 w-5 text-medical-primary" />
+                              <Languages className="h-5 w-5 text-medical-primary" />
                             </div>
                             <div className="ml-3">
                               <div className="text-sm text-gray-500">اللغات</div>
