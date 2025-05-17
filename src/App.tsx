@@ -33,6 +33,8 @@ import HospitalDetail from "./pages/HospitalDetail";
 import BeautyCenterDetail from "./pages/BeautyCenterDetail";
 import Payment from "./pages/Payment";
 import HealthReminders from "./pages/HealthReminders";
+import HomeServices from "./pages/HomeServices";
+import HomeServiceDetail from "./pages/HomeServiceDetail";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +72,8 @@ const App = () => (
             <Route path="/promotions/:id" element={<PromotionDetail />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/health-reminders" element={<HealthReminders />} />
+            <Route path="/home-services" element={<HomeServices />} />
+            <Route path="/home-services/:slug" element={<HomeServiceDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

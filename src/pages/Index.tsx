@@ -18,6 +18,7 @@ import PatientActionsSection from "@/components/PatientActionsSection";
 import OnlineDoctors from "@/components/OnlineDoctors";
 import BeautyCentersSection from "@/components/BeautyCentersSection";
 import RemindersWidget from "@/components/RemindersWidget";
+import HomeServicesSection from "@/components/HomeServicesSection";
 
 const Index = () => {
   useEffect(() => {
@@ -43,6 +44,9 @@ const Index = () => {
         
         {/* Online Consultations Section */}
         <OnlineDoctors />
+        
+        {/* Home Services Section */}
+        <HomeServicesSection />
         
         {/* Hospitals Section */}
         <HospitalsSection />
