@@ -1,8 +1,10 @@
 
 import { useState } from "react";
-import { Search, MapPin, Stethoscope, ShieldCheck, Map } from "lucide-react";
+import { Search, MapPin, Stethoscope, ShieldCheck, Map, Home, Video, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const governorates = [
   "بغداد", "البصرة", "الموصل", "أربيل", "النجف", "كربلاء",
@@ -32,11 +34,25 @@ const SearchBar = () => {
   const [region, setRegion] = useState("");
   const [specialty, setSpecialty] = useState("");
   const [insurance, setInsurance] = useState("");
+  const [homeVisit, setHomeVisit] = useState(false);
+  const [videoConsultation, setVideoConsultation] = useState(false);
+  const [audioConsultation, setAudioConsultation] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate(`/doctors?search=${encodeURIComponent(searchTerm)}&governorate=${encodeURIComponent(governorate)}&region=${encodeURIComponent(region)}&specialty=${encodeURIComponent(specialty)}&insurance=${encodeURIComponent(insurance)}`);
+    
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('search', searchTerm);
+    if (governorate) params.append('governorate', governorate);
+    if (region) params.append('region', region);
+    if (specialty) params.append('specialty', specialty);
+    if (insurance) params.append('insurance', insurance);
+    if (homeVisit) params.append('homeVisit', 'true');
+    if (videoConsultation) params.append('videoConsultation', 'true');
+    if (audioConsultation) params.append('audioConsultation', 'true');
+    
+    navigate(`/doctors?${params.toString()}`);
   };
 
   const handleGeoSearch = () => {
@@ -118,6 +134,44 @@ const SearchBar = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+      </div>
+      
+      <div className="flex flex-wrap gap-6 mb-4">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <Checkbox 
+            id="homeVisit" 
+            checked={homeVisit} 
+            onCheckedChange={(checked) => setHomeVisit(checked === true)}
+          />
+          <Label htmlFor="homeVisit" className="flex items-center">
+            <Home className="w-4 h-4 ml-1" />
+            يقبل زيارات منزلية
+          </Label>
+        </div>
+        
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <Checkbox 
+            id="videoConsult" 
+            checked={videoConsultation} 
+            onCheckedChange={(checked) => setVideoConsultation(checked === true)}
+          />
+          <Label htmlFor="videoConsult" className="flex items-center">
+            <Video className="w-4 h-4 ml-1" />
+            استشارة فيديو
+          </Label>
+        </div>
+        
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <Checkbox 
+            id="audioConsult" 
+            checked={audioConsultation} 
+            onCheckedChange={(checked) => setAudioConsultation(checked === true)}
+          />
+          <Label htmlFor="audioConsult" className="flex items-center">
+            <Phone className="w-4 h-4 ml-1" />
+            استشارة صوتية
+          </Label>
+        </div>
       </div>
       
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
