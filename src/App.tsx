@@ -32,6 +32,7 @@ import HospitalsList from "./pages/HospitalsList";
 import HospitalDetail from "./pages/HospitalDetail";
 import BeautyCenterDetail from "./pages/BeautyCenterDetail";
 import Payment from "./pages/Payment";
+import HealthReminders from "./pages/HealthReminders";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ const App = () => (
             <Route path="/promotions" element={<Promotions />} />
             <Route path="/promotions/:id" element={<PromotionDetail />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/health-reminders" element={<HealthReminders />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

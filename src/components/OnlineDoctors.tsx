@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Video, Phone, Star } from "lucide-react";
+import { Video, Phone, Star, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -112,6 +112,16 @@ const OnlineDoctors = () => {
                   <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 زيارة منزلية
+              </Button>
+            </Link>
+            <Link to="/health-reminders">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center border-medical-primary text-medical-primary"
+              >
+                <Bell className="w-4 h-4 ml-1" />
+                التذكيرات الصحية
               </Button>
             </Link>
           </div>

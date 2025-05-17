@@ -17,6 +17,7 @@ import MedicalCentersSection from "@/components/MedicalCentersSection";
 import PatientActionsSection from "@/components/PatientActionsSection";
 import OnlineDoctors from "@/components/OnlineDoctors";
 import BeautyCentersSection from "@/components/BeautyCentersSection";
+import RemindersWidget from "@/components/RemindersWidget";
 
 const Index = () => {
   useEffect(() => {
@@ -31,6 +32,11 @@ const Index = () => {
       <main className="flex-grow">
         {/* Hero Section */}
         <HeroSection />
+        
+        {/* Health Reminders Widget - Only shown if there are upcoming reminders */}
+        <div className="container mx-auto px-4 py-4">
+          <RemindersWidget />
+        </div>
         
         {/* Specialties Section */}
         <SpecialtiesSection />
