@@ -36,6 +36,7 @@ import HealthReminders from "./pages/HealthReminders";
 import HomeServices from "./pages/HomeServices";
 import HomeServiceDetail from "./pages/HomeServiceDetail";
 import News from "./pages/News";
+import MedicalProviderRegistration from "./pages/MedicalProviderRegistration";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => (
             <Route path="/home-services" element={<HomeServices />} />
             <Route path="/home-services/:slug" element={<HomeServiceDetail />} />
             <Route path="/news" element={<News />} />
+            <Route path="/medical-provider-registration" element={<MedicalProviderRegistration />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
