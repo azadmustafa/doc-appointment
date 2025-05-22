@@ -35,6 +35,7 @@ import Payment from "./pages/Payment";
 import HealthReminders from "./pages/HealthReminders";
 import HomeServices from "./pages/HomeServices";
 import HomeServiceDetail from "./pages/HomeServiceDetail";
+import News from "./pages/News";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/health-reminders" element={<HealthReminders />} />
             <Route path="/home-services" element={<HomeServices />} />
             <Route path="/home-services/:slug" element={<HomeServiceDetail />} />
+            <Route path="/news" element={<News />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

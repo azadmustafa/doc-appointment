@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -20,6 +21,7 @@ import {
   Edit,
   DollarSign,
   CreditCard,
+  Newspaper,
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -90,14 +92,18 @@ const Header = () => {
           <Link to="/promotions" className="hover:text-medical-primary">
             {t("offers")}
           </Link>
+          <Link to="/home-services" className="hover:text-medical-primary">
+            الخدمات المنزلية
+          </Link>
+          <Link to="/news" className="hover:text-medical-primary">
+            <Newspaper className="w-4 h-4 inline ml-1" />
+            الأخبار والفعاليات
+          </Link>
           <Link to="/contact" className="hover:text-medical-primary">
             {t("contactUs")}
           </Link>
           <Link to="/about" className="hover:text-medical-primary">
             {t("aboutUs")}
-          </Link>
-          <Link to="/payment" className="hover:text-medical-primary">
-            {t("payment")}
           </Link>
         </nav>
 
@@ -211,6 +217,20 @@ const Header = () => {
               onClick={closeMenu}
             >
               {t("offers")}
+            </Link>
+            <Link
+              to="/home-services"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
+            >
+              الخدمات المنزلية
+            </Link>
+            <Link
+              to="/news"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeMenu}
+            >
+              الأخبار والفعاليات
             </Link>
             <Link
               to="/contact"
